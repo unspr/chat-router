@@ -35,6 +35,7 @@ func main() {
 
 	// 优雅退出：捕获系统信号，程序结束时安全删除套接字文件
 	cleanupSig(listener)
+	Init()
 
 	for {
 		conn, err := listener.Accept()
@@ -43,7 +44,6 @@ func main() {
 			continue
 		}
 
-		Init()
 		go handleConnection(conn)
 	}
 }
