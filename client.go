@@ -125,7 +125,7 @@ func SubscribeSSE(payload []byte) (chan string, error) {
 				if len(sessionId) == 0 {
 					sessionId = event.Interaction.Id
 					log.Printf(sessionId)
-					events <- sessionId
+					events <- (sessionId + "\n")
 					continue
 				}
 

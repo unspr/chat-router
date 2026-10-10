@@ -2,12 +2,12 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 )
 
@@ -55,14 +55,13 @@ func handleConnection(conn net.Conn) {
 
 	index := bytes.IndexByte(buf, '\n')
 
-	sessionId := string(buf[:index])
+	sessionId := strings.TrimSpace(string(buf[:index]))
 	message := string(buf[index+1 : n])
 	log.Printf("\n收到客户端消息: seesionId %s message %s", sessionId, message)
 
 	ch := GetSessionChannel(sessionId, message)
 	for msg := range ch {
-		output := fmt.Sprintln(msg)
-		conn.Write([]byte(output))
+		conn.Write([]byte(msg))
 	}
 }
 
